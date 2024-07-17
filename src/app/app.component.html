@@ -3,7 +3,125 @@
     <h1 class="main-heading">Task Management System</h1>
   </nav>
   <div class="main-container">
-    <app-new-task-form></app-new-task-form>
-    <app-task-view></app-task-view>
+    <div style="width: 40%">
+      <div class="fom-container">
+        <div class="flex">
+          <form action="" class="taskForm">
+            <h3 class="new-task-heading">Add New Task</h3>
+            <label for="title" class="label">Title</label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Enter Title"
+              [(ngModel)]="taskObj.formtitle"
+              class="input"
+            />
+            <label for="desc" class="label">Description</label>
+            <textarea
+              id="desc"
+              name="desc"
+              rows="5"
+              placeholder="Write Description . . ."
+              [(ngModel)]="taskObj.desc"
+              class="input textarea"
+            ></textarea>
+            <div class="in-form">
+              <div class="in-in-form">
+                <label for="duedate" class="label">Due Date</label>
+                <input
+                  type="date"
+                  name="duedate"
+                  id="duedate"
+                  [(ngModel)]="taskObj.duedate"
+                  class="input"
+                />
+              </div>
+              <div class="in-in-form">
+                <label for="priority" class="label">Priority</label>
+                <select
+                  name="priority"
+                  id="priority"
+                  [(ngModel)]="taskObj.priority"
+                  class="input"
+                >
+                  <option value="" disabled>Select Priority</option>
+                  <option value="Low" default>Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+            <label for="" class="label">Status</label>
+            <div class="in-form">
+              <div class="in-in-form2">
+                <input
+                  type="radio"
+                  name="status"
+                  id="todo"
+                  class="input input-radio"
+                  value="ToDo"
+                  [(ngModel)]="taskObj.status"
+                />
+                <label for="todo">ToDo</label>
+              </div>
+              <div class="in-in-form2">
+                <input
+                  type="radio"
+                  name="status"
+                  id="in-progress"
+                  class="input input-radio"
+                  value="In Progress"
+                  [(ngModel)]="taskObj.status"
+                />
+                <label for="in-progress">In Progress</label>
+              </div>
+              <div class="in-in-form2">
+                <input
+                  type="radio"
+                  name="status"
+                  id="Done"
+                  class="input input-radio"
+                  value="Completed"
+                  [(ngModel)]="taskObj.status"
+                />
+                <label for="Done">Completed</label>
+              </div>
+            </div>
+            <div class="flex">
+              <button type="click" (click)="submitdata()" class="btn">
+                @if (editing) { Update } @else { ADD Task }
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    @if (taskList.length!==0) {
+    <div style="width: 60%">
+      <table class="table">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        @for (task of taskList; track $index) {
+        <tr>
+          <td>{{ task.formtitle }}</td>
+          <td>{{ task.desc }}</td>
+          <td>{{ task.duedate }}</td>
+          <td>{{ task.priority }}</td>
+          <td>{{ task.status }}</td>
+          <td (click)="editTask(task)" class="edit">📝</td>
+          <td (click)="deleteTask(task)" class="delete">❌</td>
+        </tr>
+        }
+      </table>
+    </div>
+    }
   </div>
 </div>
