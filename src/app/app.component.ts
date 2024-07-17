@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ngxCsv } from 'ngx-csv/ngx-csv';
 
 export class Task {
   id: number;
@@ -114,5 +115,70 @@ export class AppComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  sortList(value: string) {
+    console.log(value);
+    if (value == 'duedate') {
+      this.taskList.sort((a, b) =>
+        a.duedate < b.duedate ? -1 : a.duedate > b.duedate ? 1 : 0
+      );
+    } else if (value == 'priority') {
+      this.taskList.sort((aval, bval) => {
+        let s = 0;
+        if (aval.priority == bval.priority) {
+          s = 0;
+        } else if (aval.priority == 'High') {
+          s = 1;
+        } else if (bval.priority == 'High') {
+          s = -1;
+        } else if (aval.priority == 'Medium') {
+          s = 1;
+        } else if (bval.priority == 'Medium') {
+          s = -1;
+        } else if (aval.priority == 'Low') {
+          s = 1;
+        } else if (bval.priority == 'Low') {
+          s = -1;
+        }
+        return s;
+      });
+    } else if (value == 'status') {
+      this.taskList.sort((aval, bval) => {
+        let s = 0;
+        if (aval.status == bval.status) {
+          s = 0;
+        } else if (aval.status == 'Completed') {
+          s = 1;
+        } else if (bval.status == 'Completed') {
+          s = -1;
+        } else if (aval.status == 'In Progress') {
+          s = 1;
+        } else if (bval.status == 'In Progress') {
+          s = -1;
+        } else if (aval.status == 'ToDo') {
+          s = 1;
+        } else if (bval.status == 'ToDo') {
+          s = -1;
+        }
+        return s;
+      });
+    }
+  }
+
+  // Export to CSV
+  exportToCsv() {
+    var options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: 'Task Data',
+      useBom: true,
+      headers: ['Id', 'Title', 'Description', 'Due Date', 'Priority', 'Status'],
+    };
+
+    new ngxCsv(this.taskList, 'Tasks Data', options);
   }
 }

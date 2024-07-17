@@ -117,3 +117,32 @@ th {
 .delete {
   cursor: pointer;
 }
+.sort {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.sorttext {
+  color: rgb(0, 152, 152);
+}
+.sortselect {
+  padding: 0.2rem 0.4rem;
+  outline: none;
+  border: 1.5px solid rgb(0, 152, 152);
+}
+.btn2 {
+  margin-bottom: 1rem;
+  padding: 0.3rem 0.5rem;
+  outline: none;
+  border: 1.5px solid rgb(0, 152, 152);
+  font-weight: 600;
+  transition: 0.1s linear;
+  background-color: rgb(0, 152, 152);
+  color: white;
+}
+.btn2:hover {
+  color: rgb(0, 152, 152);
+  background-color: white;
+}

@@ -99,7 +99,16 @@
     </div>
     @if (taskList.length!==0) {
     <div style="width: 60%">
-      <table class="table">
+      <div class="sort">
+        <h4 class="sorttext">Sort By:</h4>
+        <select name="" id="" class="sortselect" (change)="sortList($any($event.target).value)">
+          <option value="" disabled selected>Select</option>
+          <option value="duedate">Due Date</option>
+          <option value="priority">Priority</option>
+          <option value="status">Status</option>
+        </select>
+      </div>
+      <table class="table" id="table-data">
         <tr>
           <th>Title</th>
           <th>Description</th>
@@ -121,6 +130,9 @@
         </tr>
         }
       </table>
+      <div class="sort">
+        <button (click)="exportToCsv()" class="btn2">Export To CSV</button>
+      </div>
     </div>
     }
   </div>
