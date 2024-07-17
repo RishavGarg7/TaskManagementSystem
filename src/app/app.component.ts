@@ -3,23 +3,16 @@ import { RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 
 export class Task {
-  id: number;
+  id: Date;
   formtitle: string;
   desc: string;
   duedate: string;
   priority: string;
   status: string;
-  constructor() {
-    id: 0;
-    formtitle: '';
-    desc: '';
-    duedate: '';
-    priority: '';
-    status: '';
-  }
 }
 
 @Component({
@@ -44,7 +37,7 @@ export class AppComponent implements OnInit {
   // Function to Clear Form
   clearForm() {
     this.taskObj = {
-      id: 0,
+      id: new Date(),
       formtitle: '',
       desc: '',
       duedate: '',
@@ -70,15 +63,14 @@ export class AppComponent implements OnInit {
     }
     if (!this.editing) {
       const isLocalPresent = localStorage.getItem('taskData');
+      this.taskObj.id = new Date();
       if (isLocalPresent != null) {
         const oldTasks = JSON.parse(isLocalPresent);
-        this.taskObj.id = oldTasks.length;
         oldTasks.push(this.taskObj);
         this.taskList = oldTasks;
         localStorage.setItem('taskData', JSON.stringify(oldTasks));
       } else {
         const newTasks = [];
-        this.taskObj.id = 0;
         newTasks.push(this.taskObj);
         this.taskList = newTasks;
         localStorage.setItem('taskData', JSON.stringify(newTasks));
@@ -117,6 +109,7 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // Sort By
   sortList(value: string) {
     console.log(value);
     if (value == 'duedate') {
@@ -164,6 +157,17 @@ export class AppComponent implements OnInit {
         return s;
       });
     }
+  }
+
+  // Export to XLSX
+  fileName = 'TaskList.xlsx';
+  exportToXlsx() {
+    let data = document.getElementById('table-data');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, this.fileName);
   }
 
   // Export to CSV

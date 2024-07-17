@@ -3,7 +3,7 @@
     <h1 class="main-heading">Task Management System</h1>
   </nav>
   <div class="main-container">
-    <div style="width: 40%">
+    <div class="form-outer-container">
       <div class="fom-container">
         <div class="flex">
           <form action="" class="taskForm">
@@ -98,7 +98,7 @@
       </div>
     </div>
     @if (taskList.length!==0) {
-    <div style="width: 60%">
+    <div class="list-outer-container">
       <div class="sort">
         <h4 class="sorttext">Sort By:</h4>
         <select name="" id="" class="sortselect" (change)="sortList($any($event.target).value)">
@@ -131,6 +131,7 @@
         }
       </table>
       <div class="sort">
+        <button (click)="exportToXlsx()" class="btn2">Export To XLSX</button>
         <button (click)="exportToCsv()" class="btn2">Export To CSV</button>
       </div>
     </div>
