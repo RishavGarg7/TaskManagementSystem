@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
-import { ngxCsv } from 'ngx-csv/ngx-csv';
 
 export class Task {
   id: Date;
@@ -167,18 +167,22 @@ export class TaskViewComponent implements OnInit {
   }
 
   // Export to CSV
+  fileNameCsv = 'TaskList';
   exportToCsv() {
-    var options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      showTitle: true,
-      title: 'Task Data',
-      useBom: true,
-      headers: ['Id', 'Title', 'Description', 'Due Date', 'Priority', 'Status'],
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.taskList);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { data: worksheet },
+      SheetNames: ['data'],
     };
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'csv',
+      type: 'array',
+    });
+    this.saveAsCsvFile(excelBuffer, this.fileNameCsv);
+  }
 
-    new ngxCsv(this.taskList, 'Tasks Data', options);
+  private saveAsCsvFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: 'text/csv;charset=utf-8;' });
+    saveAs(data, `${fileName}.csv`);
   }
 }
